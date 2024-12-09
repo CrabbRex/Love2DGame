@@ -6,7 +6,7 @@ function Crosshair:new()
     self.x, self.y = love.mouse.getPosition()
     self.isCrosshair = true
     self.size = 10
-    self.color = {1, 0, 0}
+    self.colour = {1, 0, 0}
 end
 
 function Crosshair:update(dt)
@@ -14,7 +14,9 @@ function Crosshair:update(dt)
 end
 
 function Crosshair:draw()
+    love.graphics.setColor(self.colour)
     love.graphics.line(self.x - self.size, self.y, self.x + self.size, self.y)
     love.graphics.line(self.x, self.y - self.size, self.x, self.y + self.size)
+    love.graphics.setColor(1, 1, 1)
 end
 

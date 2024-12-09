@@ -8,6 +8,7 @@ function love.load()
     require "Player"
     require "Crosshair"
     love.window.setMode(1280, 720)
+    love.mouse.setVisible(false)
     
     world = bump.newWorld(50)
     
