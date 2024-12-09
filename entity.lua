@@ -1,3 +1,4 @@
+-- entity.lua
 Entity = Object:extend()
 
 function Entity:new(x, y, width, height, image_path)
@@ -14,13 +15,17 @@ function Entity:new(x, y, width, height, image_path)
       self.image = nil
     end
     
+    self.last = {}
+    self.last.x = self.x
+    self.last.y = self.y
 end
 
 function Entity:update()
-  
+    -- self.last.x = self.x
+    -- self.last.y = self.y
 end
 
-function Entity:draw()
+--[[function Entity:draw()
     if self.image then
       love.graphics.draw(self.image, self.x, self.y)
     else
@@ -34,3 +39,16 @@ function Entity:checkCollision(e)
     and self.y + self.height > e.y
     and self.y < e.y + e.height
 end
+
+function Entity:wasVerticallyAligned(e)
+    return self.last.y < e.last.y + e.height and self.last.y + self.height > e.last.y
+end
+
+function Entity:wasHorizontallyAligned(e)
+    return self.last.x < e.last.x + e.width and self.last.x + self.width + e.last.x
+end
+
+function Entity:resolveCollision(e)
+    
+end
+]]--
