@@ -11,10 +11,12 @@ function love.load()
     world = bump.newWorld(50)
     
     ground = Ground(0, 720 - 50, 1280, 50)
+    platform = Ground(100, 500, 700, 50)
     player = Player(50, 500)
     
     entities = {}
     table.insert(entities, ground)
+    table.insert(entities, platform)
     table.insert(entities, player)
     
     for i,entity in ipairs(entities) do

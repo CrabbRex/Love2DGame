@@ -3,6 +3,7 @@ Ground = Entity:extend()
 
 function Ground:new(x, y, width, height)
   Ground.super.new(self, x, y, width, height)
+  self.isGround = true
 end
 
 function Ground:update()

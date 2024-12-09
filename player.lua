@@ -3,8 +3,16 @@ Player = Entity:extend()
 
 function Player:new(x, y)
     Player.super.new(self, x, y, 50, 50)
+    self.isPlayer = true
     self.speed = 200
 end
+
+local playerFilter = function(item, other)
+    if other.isGround then return 'slide'
+    elseif other.isPlayer then return 'slide'
+  end
+end
+
 
 function Player:update(dt)
     Player.super.update(self, dt)
@@ -23,16 +31,19 @@ function Player:update(dt)
       goalY = goalY + self.speed * dt
     end
     
-    local actualX, actualY, cols, len = world:move(self, goalX, goalY)
+    local actualX, actualY, cols, len = world:move(self, goalX, goalY, playerFilter)
     self.x, self.y = actualX, actualY
-    
-    --[[ Collision Check
-    for i,entity in ipairs(entities) do
-      if self:checkCollision(entity) then
-        self.x, self.y = prevX, prevY
-        break
+    for i=1, len do 
+      local other = cols[i].other
+      if other.isGround then
+        print("ground")
+      elseif other.isPlayer then
+        print("player")
       end
-    end]]--
+      
+    end
+    
+    
 end
 
 function Player:draw()
