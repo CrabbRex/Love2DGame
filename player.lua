@@ -67,8 +67,11 @@ function Player:update(dt)
     --Shooting:
     if love.mouse.isDown(1) then
       print("Shot")
-      local mouseX, mouseY = love.mouse.getPosition()
-      local bullet = Bullet(world, self.x+self.width/2, self.y+self.height/2, mouseX, mouseY)
+      local crosshairX, crosshairY = love.mouse.getPosition()
+      local playerCenterX = self.x + self.width/2
+      local playerCenterY = self.y + self.height/2
+      local direction = { dx = crosshairX - playerCenterX, dy = crosshairY - playerCenterY }
+      local bullet = Bullet(world, playerCenterX, playerCenterY, direction)
       table.insert(entities, bullet)
     end
     
