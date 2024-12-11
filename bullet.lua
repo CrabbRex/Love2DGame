@@ -4,8 +4,8 @@ Bullet = Entity:extend()
 function Bullet:new(world, x, y, direction, width, height)
     self.x = x --mouse spot when clicked
     self.y = y
-    self.width = width or 10
-    self.height = height or 10
+    self.width = width or 5
+    self.height = height or 5
     self.speed = 800
     self.isBullet = true
     self.toRemove = false
@@ -30,8 +30,23 @@ function Bullet:update(dt)
     self.y = self.y + self.direction.dy * self.speed * dt
     local actualX, actualY, cols, len = self.world:move(self, self.x, self.y, bulletFilter)
     self.x, self.y = actualX, actualY
+    
+    for i=1, len do
+      local col = cols[i]
+      if col.other.isGround then
+        self.toRemove = true
+      end
+    end
+    if self.x < 0 or self.x > love.graphics.getWidth() or self.y < 0 or self.y > love.graphics.getHeight() then
+      self.toRemove = true
+    end
+    
 end
 
 function Bullet:draw()
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+end
+
+function Bullet:destroy()
+  self.world:remove(self)
 end

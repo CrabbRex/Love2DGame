@@ -31,6 +31,12 @@ end
 function love.update(dt)
   for i, entity in ipairs(entities) do
     entity:update(dt)
+    
+    if entity.isBullet and entity.toRemove then
+      entity:destroy()
+      table.remove(entities, i)
+    end
+    
   end
   crosshair:update(dt)
 end
