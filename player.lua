@@ -10,6 +10,8 @@ function Player:new(x, y, world)
     self.jumpSpeed = -650
     self.isGrounded = false
     self.world = world
+    self.shootCooldown = 0.5
+    self.lastShot = 0
 end
 
 local playerFilter = function(item, other)
@@ -64,15 +66,16 @@ function Player:update(dt)
       end
     end
     
+    self.lastShot = self.lastShot + dt
     --Shooting:
-    if love.mouse.isDown(1) then
-      print("Shot")
+    if love.mouse.isDown(1) and self.lastShot >= self.shootCooldown then
       local crosshairX, crosshairY = love.mouse.getPosition()
       local playerCenterX = self.x + self.width/2
       local playerCenterY = self.y + self.height/2
       local direction = { dx = crosshairX - playerCenterX, dy = crosshairY - playerCenterY }
       local bullet = Bullet(world, playerCenterX, playerCenterY, direction)
       table.insert(entities, bullet)
+      self.lastShot = 0
     end
     
 end

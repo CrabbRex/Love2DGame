@@ -31,6 +31,7 @@ function Bullet:update(dt)
     local actualX, actualY, cols, len = self.world:move(self, self.x, self.y, bulletFilter)
     self.x, self.y = actualX, actualY
     
+    -- Setting bullets for removal. Removed in main (for now)
     for i=1, len do
       local col = cols[i]
       if col.other.isGround then
@@ -47,6 +48,7 @@ function Bullet:draw()
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 end
 
+--Remove bullet, called in main (for now)
 function Bullet:destroy()
   self.world:remove(self)
 end
