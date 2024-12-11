@@ -1,7 +1,7 @@
 -- player.lua
 Player = Entity:extend()
-
-function Player:new(x, y)
+require "Bullet"
+function Player:new(x, y, world)
     Player.super.new(self, x, y, 50, 50)
     self.isPlayer = true
     self.speed = 400
@@ -9,6 +9,7 @@ function Player:new(x, y)
     self.vy = 0
     self.jumpSpeed = -650
     self.isGrounded = false
+    self.world = world
 end
 
 local playerFilter = function(item, other)
@@ -63,9 +64,28 @@ function Player:update(dt)
       end
     end
     
+    --Shooting:
+    if love.mouse.isDown(1) then
+      print("Shot")
+      local crosshairPositionX, crosshairPositionY = love.mouse.getPosition()
+      local bullet = Bullet(world, crosshairPositionX, crosshairPositionY)
+      table.insert(entities, bullet)
+    end
     
 end
 
 function Player:draw()
     love.graphics.rectangle("line", self.x, self.y, 50, 50)
 end
+
+--[[
+function Player:shoot()
+    local mouseX, mouseY = love.mouse.getPosition()
+    local dx, dy = mouseX - self.x, mouseY - self.y
+    local magnitude = math.sqrt(dx^2 + dy^2)
+    local direction = { dx = dx / magnitude, dy = dy / magnitude }
+    
+    local bullet = Bullet(world, self.x + self.width/2, self.y + self.height/2, direction)
+    table.insert(entities, bullet)
+end
+]]--

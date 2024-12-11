@@ -14,7 +14,7 @@ function love.load()
     
     ground = Ground(0, 720 - 50, 1280, 50)
     platform = Ground(100, 500, 700, 50)
-    player = Player(50, 500)
+    player = Player(50, 500, world)
     
     
     entities = {}
@@ -29,8 +29,9 @@ function love.load()
 end
 
 function love.update(dt)
-  player:update(dt)
-  ground:update(dt)
+  for i, entity in ipairs(entities) do
+    entity:update(dt)
+  end
   crosshair:update(dt)
 end
 
