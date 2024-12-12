@@ -17,7 +17,7 @@ function love.load()
     platform = Ground(100, 500, 350, 50)
     platform2 = Ground(400, 300, 350, 50)
     player = Player(50, 500, world)
-    enemy = Enemy(800, 600)
+    enemy = Enemy(200, 600, player)
     
     
     entities = {}
