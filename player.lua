@@ -5,8 +5,6 @@ function Player:new(x, y, world)
     Player.super.new(self, x, y, 50, 50)
     self.isPlayer = true
     self.speed = 400
-    self.gravity = 1000
-    self.vy = 0
     self.jumpSpeed = -650
     self.isGrounded = false
     self.world = world
@@ -26,7 +24,7 @@ function Player:update(dt)
     
     -- Gravity:
     if not self.isGrounded then
-      self.vy = self.vy + self.gravity * dt
+      self:changeVelocityByGravity(dt)
     else
       self.vy = 0
     end
@@ -83,15 +81,3 @@ end
 function Player:draw()
     love.graphics.rectangle("line", self.x, self.y, 50, 50)
 end
-
---[[
-function Player:shoot()
-    local mouseX, mouseY = love.mouse.getPosition()
-    local dx, dy = mouseX - self.x, mouseY - self.y
-    local magnitude = math.sqrt(dx^2 + dy^2)
-    local direction = { dx = dx / magnitude, dy = dy / magnitude }
-    
-    local bullet = Bullet(world, self.x + self.width/2, self.y + self.height/2, direction)
-    table.insert(entities, bullet)
-end
-]]--
