@@ -10,6 +10,7 @@ function Player:new(x, y, world)
     self.world = world
     self.shootCooldown = 0.5
     self.lastShot = 0
+    self.health = 100
 end
 
 local playerFilter = function(item, other)
@@ -75,9 +76,32 @@ function Player:update(dt)
       table.insert(entities, bullet)
       self.lastShot = 0
     end
-    
+    self.health = self.health - 1 * dt
 end
 
 function Player:draw()
+    --Player
     love.graphics.rectangle("line", self.x, self.y, 50, 50)
+    
+    --Health Bar
+    local barWidth = 400
+    local barHeight = 20
+    local healthPercentage = self.health / 100
+    local healthBarX = (love.graphics.getWidth() - barWidth) / 2
+    local healthBarY = love.graphics.getHeight() - barHeight - 10
+    love.graphics.setColor(0.5, 0.5, 0.5)
+    love.graphics.rectangle("fill", healthBarX, healthBarY, barWidth, barHeight)
+    
+    if self.health > 0 then
+      love.graphics.setColor(1 - healthPercentage, healthPercentage, 0)
+      love.graphics.rectangle("fill", healthBarX, healthBarY, barWidth * healthPercentage, barHeight)
+    end
+    love.graphics.setColor(1, 1, 1)
+end
+
+
+function Player:takeDamage(enemyType)
+    if enemyType == "Slime" then
+      self.health = self.health - 10
+    end
 end

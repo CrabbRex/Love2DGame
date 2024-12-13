@@ -1,7 +1,7 @@
 --enemy.lua
 Enemy = Entity:extend()
 
-function Enemy:new(x, y, player)
+function Enemy:new(x, y, speed, player)
     Enemy.super.new(self, x, y, 50, 50)
     self.isEnemy = true
     self.player = player
