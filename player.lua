@@ -11,11 +11,15 @@ function Player:new(x, y, world)
     self.shootCooldown = 0.5
     self.lastShot = 0
     self.health = 100
+    self.lastHitTime = 0
+    self.hitCooldown = 1
 end
 
 local playerFilter = function(item, other)
     if other.isGround then return 'slide'
     elseif other.isPlayer then return 'slide'
+    elseif other.isEnemy then return 'cross'
+    elseif other.isSlime then return 'cross'
   end
 end
 
@@ -52,8 +56,18 @@ function Player:update(dt)
       local other = cols[i].other
       if other.isGround then
         
-      elseif other.isPlayer then
-        
+      elseif other.isSlime then
+        local currentTime = love.timer.getTime()
+        if currentTime - self.lastHitTime >= self.hitCooldown then
+          self:takeDamage("Slime")
+          self.lastHitTime = currentTime
+          if self.x < other.x then
+            other.x = other.x + other.knockBack
+          else
+            other.x = other.x - other.knockBack
+          end
+          
+        end
       end
     end
     
@@ -65,7 +79,7 @@ function Player:update(dt)
       end
     end
     
-    self.lastShot = self.lastShot + dt
+    self.lastShot = self.lastShot + dt --DO NOT DELETE
     --Shooting:
     if love.mouse.isDown(1) and self.lastShot >= self.shootCooldown then
       local crosshairX, crosshairY = love.mouse.getPosition()
@@ -76,7 +90,7 @@ function Player:update(dt)
       table.insert(entities, bullet)
       self.lastShot = 0
     end
-    self.health = self.health - 1 * dt
+    
 end
 
 function Player:draw()
