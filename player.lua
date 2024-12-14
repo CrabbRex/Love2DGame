@@ -11,8 +11,6 @@ function Player:new(x, y, world)
     self.shootCooldown = 0.5
     self.lastShot = 0
     self.health = 100
-    self.lastHitTime = 0
-    self.hitCooldown = 1
 end
 
 local playerFilter = function(item, other)
@@ -58,16 +56,15 @@ function Player:update(dt)
         
       elseif other.isSlime then
         local currentTime = love.timer.getTime()
-        if currentTime - self.lastHitTime >= self.hitCooldown then
-          self:takeDamage("Slime")
-          self.lastHitTime = currentTime
-          if self.x < other.x then
-            other.x = other.x + other.knockBack
-          else
-            other.x = other.x - other.knockBack
-          end
-          
-        end
+        --if currentTime - self.lastHitTime >= self.hitCooldown then
+          --self:takeDamage("Slime")
+          --self.lastHitTime = currentTime
+          --if self.x < other.x then
+          --  other.x = other.x + other.knockBack
+          --else
+          --  other.x = other.x - other.knockBack
+          --end
+        --end
       end
     end
     

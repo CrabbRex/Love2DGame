@@ -6,6 +6,8 @@ function Enemy:new(x, y, speed, player)
     self.isEnemy = true
     self.player = player
     self.speed = 100
+    self.lastHitTime = 0
+    self.hitCooldown = 1
 end
 
 function Enemy:update(dt)
@@ -27,8 +29,20 @@ function Enemy:update(dt)
     
     for i=1, len do
       local col = cols[i]
+      local other = cols[i].other
       if col.normal.y < 0 then
         self.vy = 0
+      elseif other.isPlayer then
+        local currentTime = love.timer.getTime()
+        if currentTime - self.lastHitTime >= self.hitCooldown then
+          self.player:takeDamage("Slime")
+          self.lastHitTime = currentTime
+          if self.x < other.x then
+            other.x = other.x + self.knockBack
+          else
+            other.x = other.x - self.knockBack
+          end
+        end        
       end
     end
 end
