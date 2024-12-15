@@ -67,4 +67,22 @@ function love.draw()
       end
     end)
     crosshair:draw()
+    drawHUD()
+end
+
+function drawHUD()
+    local barWidth = 400
+    local barHeight = 20
+    local barPercentage = player.health / 100
+    local healthBarX = 10
+    local healthBarY = love.graphics.getHeight() - barHeight - 10
+    
+    love.graphics.setColor(0.5, 0.5, 0.5)
+    love.graphics.rectangle("fill", healthBarX, healthBarY, barWidth, barHeight)
+    
+    if player.health > 0 then
+      love.graphics.setColor(1 - barPercentage, barPercentage, 0)
+      love.graphics.rectangle("fill", healthBarX, healthBarY, barWidth * barPercentage, barHeight)
+    end
+    love.graphics.setColor(1, 1, 1)
 end

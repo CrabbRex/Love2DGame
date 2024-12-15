@@ -94,20 +94,6 @@ function Player:draw()
     --Player
     love.graphics.rectangle("line", self.x, self.y, 50, 50)
     
-    --Health Bar
-    local barWidth = 400
-    local barHeight = 20
-    local healthPercentage = self.health / 100
-    local healthBarX = (love.graphics.getWidth() - barWidth) / 2
-    local healthBarY = love.graphics.getHeight() - barHeight - 10
-    love.graphics.setColor(0.5, 0.5, 0.5)
-    love.graphics.rectangle("fill", healthBarX, healthBarY, barWidth, barHeight)
-    
-    if self.health > 0 then
-      love.graphics.setColor(1 - healthPercentage, healthPercentage, 0)
-      love.graphics.rectangle("fill", healthBarX, healthBarY, barWidth * healthPercentage, barHeight)
-    end
-    love.graphics.setColor(1, 1, 1)
 end
 
 

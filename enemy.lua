@@ -10,6 +10,14 @@ function Enemy:new(x, y, speed, player)
     self.hitCooldown = 1
 end
 
+local enemyFilter = function(item, other)
+    if other.isEnemy then return 'cross'
+    else return 'slide'
+    end
+    
+end
+
+
 function Enemy:update(dt)
     Enemy.super.update(self, dt)
     self:changeVelocityByGravity(dt)--Increases vy
@@ -24,7 +32,7 @@ function Enemy:update(dt)
     end
     
     
-    local actualX, actualY, cols, len = world:move(self, goalX, goalY)
+    local actualX, actualY, cols, len = world:move(self, goalX, goalY, enemyFilter)
     self.x, self.y = actualX, actualY
     
     for i=1, len do
@@ -43,7 +51,6 @@ function Enemy:update(dt)
             other.x = other.x - self.knockBack
           end
         end 
-        --elseif other.isEnemy
       end
     end
 end

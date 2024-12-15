@@ -8,6 +8,7 @@ function Slime:new(x, y, player)
     self.isSlime = true
     self.setColor = {0, 1, 0}
     self.knockBack = 50
+    self.health = 80
 end
 
 function Slime:update(dt)
