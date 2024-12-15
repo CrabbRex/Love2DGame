@@ -42,12 +42,11 @@ function Enemy:update(dt)
           else
             other.x = other.x - self.knockBack
           end
-        end        
+        end 
+        --elseif other.isEnemy
       end
     end
 end
-
-
 
 function Enemy:draw()
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)

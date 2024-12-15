@@ -79,7 +79,7 @@ function Player:update(dt)
     self.lastShot = self.lastShot + dt --DO NOT DELETE
     --Shooting:
     if love.mouse.isDown(1) and self.lastShot >= self.shootCooldown then
-      local crosshairX, crosshairY = love.mouse.getPosition()
+      local crosshairX, crosshairY = camera:toWorld(love.mouse.getPosition())
       local playerCenterX = self.x + self.width/2
       local playerCenterY = self.y + self.height/2
       local direction = { dx = crosshairX - playerCenterX, dy = crosshairY - playerCenterY }

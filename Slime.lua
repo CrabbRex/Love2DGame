@@ -7,7 +7,7 @@ function Slime:new(x, y, player)
     Slime.super.new(self, x, y, slimeSpeed, player)
     self.isSlime = true
     self.setColor = {0, 1, 0}
-    self.knockBack = 20
+    self.knockBack = 50
 end
 
 function Slime:update(dt)
