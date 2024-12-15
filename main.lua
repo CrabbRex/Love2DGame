@@ -77,9 +77,11 @@ function drawHUD()
     local healthBarX = 10
     local healthBarY = love.graphics.getHeight() - barHeight - 10
     
+    --Background bar
     love.graphics.setColor(0.5, 0.5, 0.5)
     love.graphics.rectangle("fill", healthBarX, healthBarY, barWidth, barHeight)
     
+    --Moving health bar
     if player.health > 0 then
       love.graphics.setColor(1 - barPercentage, barPercentage, 0)
       love.graphics.rectangle("fill", healthBarX, healthBarY, barWidth * barPercentage, barHeight)

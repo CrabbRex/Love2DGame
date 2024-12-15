@@ -36,6 +36,8 @@ function Bullet:update(dt)
       local col = cols[i]
       if col.other.isGround then
         self.toRemove = true
+      elseif col.other.isEnemy then
+        self.toRemove = true
       end
     end
     if self.x < 0 or self.x > love.graphics.getWidth() or self.y < 0 or self.y > love.graphics.getHeight() then
