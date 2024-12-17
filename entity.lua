@@ -27,3 +27,7 @@ function Entity:update()
     
 end
 
+
+function Entity:destroy()
+    self.world:remove(self)
+end

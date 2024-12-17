@@ -52,7 +52,4 @@ function Bullet:draw()
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 end
 
---Remove bullet, called in main (for now)
-function Bullet:destroy()
-    self.world:remove(self)
-end
+

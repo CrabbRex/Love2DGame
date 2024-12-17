@@ -77,6 +77,4 @@ function Enemy:die()
     self.toRemove = true
 end
 
-function Enemy:destroy()
-    self.world:remove(self)
-end
+
