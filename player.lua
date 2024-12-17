@@ -8,7 +8,7 @@ function Player:new(x, y, world)
     self.jumpSpeed = -650
     self.isGrounded = false
     self.world = world
-    self.shootCooldown = 0.5
+    self.shootCooldown = 0.2
     self.lastShot = 0
     self.health = 100
 end

@@ -16,19 +16,18 @@ function love.load()
     world = bump.newWorld(50)
     
     ground = Ground(0, 720 - 50, 1280, 50)
-    platform = Ground(100, 500, 350, 50)
-    platform2 = Ground(400, 300, 350, 50)
+    platform = Ground(250, 500, 300, 50)
     player = Player(50, 500, world)
     slime = Slime(world, 200, 600, player)
     slime2 = Slime(world, 300, 600, player)
     slime3 = Slime(world, 400, 600, player)
-    
-    
     entities = {}
+    
+    generatePlatforms(20, 2000, 2000)
+    
     table.insert(entities, ground)
     table.insert(entities, platform)
     table.insert(entities, player)
-    table.insert(entities, platform2)
     table.insert(entities, slime)
     table.insert(entities, slime2)
     table.insert(entities, slime3)
@@ -76,6 +75,35 @@ function love.draw()
     drawHUD()
     DrawFPS()
 end
+
+function generatePlatforms(count, worldWidth, worldHeight)
+    local minVertSpacing = 100
+    local maxVertSpacing = 200
+    local minHorzSpacing = -300
+    local maxHorzSpacing = 300
+    
+    local lastX = 100
+    local lastY = 500
+    
+    for i = 1, count do
+        local width = love.math.random(100, 300)
+        local height = 50
+        
+        local x = lastX + love.math.random(minHorzSpacing, maxHorzSpacing)
+        local y = lastY - love.math.random(minVertSpacing, maxVertSpacing)
+        
+        x = math.max(0, math.min(worldWidth - width, x))
+        y = math.max(0, y)
+        
+        local platform = Ground(x, y, width, height)
+        table.insert(entities, platform)
+        
+        lastX = x
+        lastY = y
+    end
+    
+end
+
 
 function drawHUD()
     local barWidth = 400
