@@ -1,9 +1,11 @@
 -- main.lua
 
+
+
 function love.load()
-    Object = require "classic"
-    local bump = require 'bump'
-    local gamera = require 'gamera'
+    Object = require "Libraries/classic"
+    local bump = require 'Libraries/bump'
+    local gamera = require 'Libraries/gamera'
     require "Entity"
     require "Ground"
     require "Player"
@@ -14,6 +16,10 @@ function love.load()
     love.mouse.setVisible(false)
     
     world = bump.newWorld(50)
+    
+    -- Define States:
+    
+    -- Set Initial State:
     
     ground = Ground(0, 720 - 50, 1280, 50)
     platform = Ground(250, 500, 300, 50)
@@ -77,9 +83,9 @@ function love.draw()
 end
 
 function generatePlatforms(count, worldWidth, worldHeight)
-    local minVertSpacing = 100
+    local minVertSpacing = 200
     local maxVertSpacing = 200
-    local minHorzSpacing = -300
+    local minHorzSpacing = 200
     local maxHorzSpacing = 300
     
     local lastX = 100
