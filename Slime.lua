@@ -2,13 +2,13 @@
 Slime = Enemy:extend()
 
 
-function Slime:new(x, y, player)
-    self.slimeSpeed = 10
-    Slime.super.new(self, x, y, slimeSpeed, player)
+function Slime:new(world, x, y, player)
+    self.slimeSpeed = 30
+    local slimeHealth = 30
+    Slime.super.new(self, world, x, y, self.slimeSpeed, slimeHealth, player)
     self.isSlime = true
     self.setColor = {0, 1, 0}
     self.knockBack = 50
-    self.health = 80
 end
 
 function Slime:update(dt)

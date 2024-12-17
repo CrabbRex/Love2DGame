@@ -10,6 +10,7 @@ function Bullet:new(world, x, y, direction, width, height)
     self.isBullet = true
     self.toRemove = false
     self.world = world
+    self.damageAmount = 10
     
     local magnitude = math.sqrt(direction.dx^2 + direction.dy^2)
     self.direction = { dx = direction.dx / magnitude, dy = direction.dy / magnitude }
@@ -38,6 +39,7 @@ function Bullet:update(dt)
         self.toRemove = true
       elseif col.other.isEnemy then
         self.toRemove = true
+        col.other:takeDamage(self.damageAmount)
       end
     end
     if self.x < 0 or self.x > love.graphics.getWidth() or self.y < 0 or self.y > love.graphics.getHeight() then
@@ -52,5 +54,5 @@ end
 
 --Remove bullet, called in main (for now)
 function Bullet:destroy()
-  self.world:remove(self)
+    self.world:remove(self)
 end

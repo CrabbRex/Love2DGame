@@ -19,9 +19,9 @@ function love.load()
     platform = Ground(100, 500, 350, 50)
     platform2 = Ground(400, 300, 350, 50)
     player = Player(50, 500, world)
-    slime = Slime(200, 600, player)
-    slime2 = Slime(300, 600, player)
-    slime3 = Slime(400, 600, player)
+    slime = Slime(world, 200, 600, player)
+    slime2 = Slime(world, 300, 600, player)
+    slime3 = Slime(world, 400, 600, player)
     
     
     entities = {}
@@ -51,8 +51,14 @@ function love.update(dt)
       entity:destroy()
       table.remove(entities, i)
     end
+    if entity.isEnemy and entity.toRemove then
+      table.remove(entities, i)
+      entity:destroy()
+    end
+    
     end
     crosshair:update(dt)
+    --camera pos
     camera:setPosition(player.x + player.width/2, player.y + player.height/2)
 end
 
@@ -68,6 +74,7 @@ function love.draw()
     end)
     crosshair:draw()
     drawHUD()
+    DrawFPS()
 end
 
 function drawHUD()
@@ -87,4 +94,10 @@ function drawHUD()
       love.graphics.rectangle("fill", healthBarX, healthBarY, barWidth * barPercentage, barHeight)
     end
     love.graphics.setColor(1, 1, 1)
+end
+
+
+function DrawFPS()
+    local fps = love.timer.getFPS()
+    love.graphics.print("FPS: " .. fps, love.graphics.getWidth() - 60, 10)
 end

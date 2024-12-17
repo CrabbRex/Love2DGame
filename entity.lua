@@ -27,8 +27,3 @@ function Entity:update()
     
 end
 
---ADD GRAVITY CODE FOR NO CODE REUSE!!!
-
---[[function Entity:__toString()
-    return string.format("Entity[%s] at (%d, %d)", self.__class, self.x, self.y)
-end]]--

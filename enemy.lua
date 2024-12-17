@@ -1,11 +1,14 @@
 --enemy.lua
 Enemy = Entity:extend()
 
-function Enemy:new(x, y, speed, player)
+function Enemy:new(world, x, y, speed, health, player)
     Enemy.super.new(self, x, y, 50, 50)
+    self.world = world
     self.isEnemy = true
+    self.toRemove = false
     self.player = player
-    self.speed = 100
+    self.speed = speed
+    self.health = health
     self.lastHitTime = 0
     self.hitCooldown = 1
 end
@@ -57,4 +60,23 @@ end
 
 function Enemy:draw()
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+    
+    
+end
+
+function Enemy:takeDamage(damage)
+    self.health = self.health - damage
+    if self.health <= 0 then
+      self:die()
+    end
+end
+
+
+function Enemy:die()
+    print("Dead")
+    self.toRemove = true
+end
+
+function Enemy:destroy()
+    self.world:remove(self)
 end
