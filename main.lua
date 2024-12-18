@@ -8,6 +8,7 @@ function love.load()
     -- Define States:
     local menuState = require "states/menuState"
     levelOne = require "states/levelOne"
+    pauseState = require "states/pauseState"
     
     -- Set Initial State:
     Gamestate.registerEvents()

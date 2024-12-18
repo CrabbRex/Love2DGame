@@ -2,7 +2,7 @@
 Player = Entity:extend()
 require "Bullet"
 function Player:new(x, y, world, camera)
-    Player.super.new(self, x, y, 50, 50)
+    Player.super.new(self, x, y, 25, 25)
     self.isPlayer = true
     self.speed = 600
     self.jumpSpeed = -650
@@ -93,7 +93,7 @@ end
 
 function Player:draw()
     --Player
-    love.graphics.rectangle("line", self.x, self.y, 50, 50)
+    love.graphics.rectangle("line", self.x, self.y, 25, 25)
     
 end
 

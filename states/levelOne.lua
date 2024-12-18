@@ -75,6 +75,12 @@ function levelOne:draw()
     self:drawFPS()
 end
 
+function levelOne:keypressed(key)
+    if key == "p" then
+      Gamestate.switch(pauseState)
+    end
+end
+
 
 function levelOne:generatePlatforms(count, worldWidth, worldHeight)
     local minVertSpacing = 100
