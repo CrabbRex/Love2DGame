@@ -1,13 +1,14 @@
 -- player.lua
 Player = Entity:extend()
 require "Bullet"
-function Player:new(x, y, world)
+function Player:new(x, y, world, camera)
     Player.super.new(self, x, y, 50, 50)
     self.isPlayer = true
-    self.speed = 400
+    self.speed = 600
     self.jumpSpeed = -650
     self.isGrounded = false
     self.world = world
+    self.camera = camera
     self.shootCooldown = 0.2
     self.lastShot = 0
     self.health = 100
@@ -48,7 +49,7 @@ function Player:update(dt)
     end
     
     
-    local actualX, actualY, cols, len = world:move(self, goalX, goalY, playerFilter)
+    local actualX, actualY, cols, len = self.world:move(self, goalX, goalY, playerFilter)
     self.x, self.y = actualX, actualY
     for i=1, len do 
       local other = cols[i].other
@@ -79,12 +80,12 @@ function Player:update(dt)
     self.lastShot = self.lastShot + dt --DO NOT DELETE
     --Shooting:
     if love.mouse.isDown(1) and self.lastShot >= self.shootCooldown then
-      local crosshairX, crosshairY = camera:toWorld(love.mouse.getPosition())
+      local crosshairX, crosshairY = self.camera:toWorld(love.mouse.getPosition())
       local playerCenterX = self.x + self.width/2
       local playerCenterY = self.y + self.height/2
       local direction = { dx = crosshairX - playerCenterX, dy = crosshairY - playerCenterY }
-      local bullet = Bullet(world, playerCenterX, playerCenterY, direction)
-      table.insert(entities, bullet)
+      local bullet = Bullet(self.world, playerCenterX, playerCenterY, direction)
+      table.insert(levelOne._entities, bullet)
       self.lastShot = 0
     end
     

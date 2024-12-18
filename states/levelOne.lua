@@ -1,6 +1,4 @@
 -- level1.lua LEVEL 1
---[[
-local level1State = {}
 
 Object = require "Libraries/classic"
 local bump = require 'Libraries/bump'
@@ -12,19 +10,24 @@ require "Crosshair"
 require "Enemy"
 require "Slime"
 
-function level1State:load()
+local levelOne = {}
+
+function levelOne:init()
     love.mouse.setVisible(false)
-    
     self.world = bump.newWorld(50)
+    
+    self.crosshair = Crosshair()
+    self.camera = gamera.new(-math.huge, -math.huge, math.huge, math.huge)
+    self.camera:setWindow(0, 0, 1280, 720)
     
     self.entities = {}
     self.ground = Ground(0, 720 - 50, 1280, 50)
     self.platform = Ground(250, 500, 300, 50)
-    self.player = Player(50, 500, self.world)
+    self.player = Player(50, 500, self.world, self.camera)
     self.slime = Slime(self.world, 200, 600, self.player)
     self.slime2 = Slime(self.world, 300, 600, self.player)
     self.slime3 = Slime(self.world, 400, 600, self.player)
-    
+     
     table.insert(self.entities, self.ground)
     table.insert(self.entities, self.platform)
     table.insert(self.entities, self.player)
@@ -32,44 +35,48 @@ function level1State:load()
     table.insert(self.entities, self.slime2)
     table.insert(self.entities, self.slime3)
     
-    self:generatePlatforms(20, 2000, 2000)
+    self._entities = self.entities
     
+    self:generatePlatforms(20, 2000, 2000)
+   
     for _, entity in ipairs(self.entities) do
         self.world:add(entity, entity.x, entity.y, entity.width, entity.height)
     end
-    
-    self.crosshair = Crosshair()
-    self.camera = gamera.new(-math.huge, -math.huge, math.huge, math.huge)
-    self.camera:setWindow(0, 0, 1280, 720)
 end
 
-function level1State:update(dt)
+function levelOne:enter()
+    print("Level 1")
+end
+
+    
+function levelOne:update(dt)
     for i, entity in ipairs(self.entities) do
-        entity:update(dt)
-        if entity.isBullet and entity.toRemove then
-            entity:destroy()
-            table.remove(self.entities, i)
-        elseif entity.isEnemy and entity.toRemove then
-            entity:destroy()
-            table.remove(self.entities, i)
-        end
+      entity:update(dt)
+      if entity.isBullet and entity.toRemove then
+          entity:destroy()
+          table.remove(self.entities, i)
+      elseif entity.isEnemy and entity.toRemove then
+          entity:destroy()
+          table.remove(self.entities, i)
+      end
     end
     self.crosshair:update(dt)
     self.camera:setPosition(self.player.x + self.player.width / 2, self.player.y + self.player.height / 2)
 end
-
-function level1State:draw()
+    
+function levelOne:draw()
     self.camera:draw(function()
-        for _, entity in ipairs(self.entities) do
-            entity:draw()
-        end
+      for _, entity in ipairs(self.entities) do
+          entity:draw()
+      end
     end)
     self.crosshair:draw()
     self:drawHUD()
     self:drawFPS()
 end
 
-function level1State:generatePlatforms(count, worldWidth, worldHeight)
+
+function levelOne:generatePlatforms(count, worldWidth, worldHeight)
     local minVertSpacing = 100
     local maxVertSpacing = 200
     local minHorzSpacing = -300
@@ -96,7 +103,7 @@ function level1State:generatePlatforms(count, worldWidth, worldHeight)
     end
 end
 
-function level1State:drawHUD()
+function levelOne:drawHUD()
     local barWidth = 400
     local barHeight = 20
     local barPercentage = self.player.health / 100
@@ -113,9 +120,9 @@ function level1State:drawHUD()
     love.graphics.setColor(1, 1, 1)
 end
 
-function level1State:drawFPS()
+function levelOne:drawFPS()
     local fps = love.timer.getFPS()
     love.graphics.print("FPS: " .. fps, love.graphics.getWidth() - 60, 10)
 end
 
-return level1State]]--
+return levelOne

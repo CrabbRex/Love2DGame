@@ -35,7 +35,7 @@ function Enemy:update(dt)
     end
     
     
-    local actualX, actualY, cols, len = world:move(self, goalX, goalY, enemyFilter)
+    local actualX, actualY, cols, len = self.world:move(self, goalX, goalY, enemyFilter)
     self.x, self.y = actualX, actualY
     
     for i=1, len do
