@@ -1,6 +1,5 @@
 -- menuState.lua
 
-
 local menuState = {}
 local levelOne = require("states/levelOne")
 function menuState:enter()

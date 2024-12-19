@@ -24,32 +24,88 @@ function levelOne:init()
     self.ground = Ground(0, 720 - 50, 1280, 50)
     self.platform = Ground(250, 500, 300, 50)
     self.player = Player(50, 500, self.world, self.camera)
-    self.slime = Slime(self.world, 200, 600, self.player)
-    self.slime2 = Slime(self.world, 300, 600, self.player)
-    self.slime3 = Slime(self.world, 400, 600, self.player)
      
     table.insert(self.entities, self.ground)
     table.insert(self.entities, self.platform)
     table.insert(self.entities, self.player)
-    table.insert(self.entities, self.slime)
-    table.insert(self.entities, self.slime2)
-    table.insert(self.entities, self.slime3)
-    
     self._entities = self.entities
     
-    self:generatePlatforms(20, 2000, 2000)
+    self.activeChunks = {}
+    self.chunkSize = 1500
+    self.loadedRadius = 3
+    
+    
    
     for _, entity in ipairs(self.entities) do
         self.world:add(entity, entity.x, entity.y, entity.width, entity.height)
     end
+    self:generateInitialChunks()
 end
 
 function levelOne:enter()
     print("Level 1")
 end
 
+function levelOne:generateInitialChunks()
+    local playerChunk = math.floor(self.player.x / self.chunkSize)
+    for i = -self.loadedRadius, self.loadedRadius do
+      self:loadChunk(playerChunk + i)
+    end
+end
+
+function levelOne:loadChunk(chunkX)
+    if self.activeChunks[chunkX] then return end
+    local chunkStartX = chunkX * self.chunkSize
+    print("current chunk: " and chunkStartX)
+    local platforms = self:generatePlatforms(chunkStartX, self.chunkSize)
+    for _, platform in ipairs(platforms) do
+      table.insert(self.entities, platform)
+      self.world:add(platform, platform.x, platform.y, platform.width, platform.height)
+    end
+    self.activeChunks[chunkX] = true
+end
+
+function levelOne:unloadChunk(chunkX)
+    if not self.activeChunks[chunkX] then return end
+    for i=#self.entities, 1, -1 do
+      local entity = self.entities[i]
+      if entity.x >= chunkX * self.chunkSize and entity.x < (chunkX + 1) * self.chunkSize then
+          self.world:remove(entity)
+          table.remove(self.entities, i)
+      end
+    end
+    self.activeChunks[chunkX] = nil
+end
+
+function levelOne:updateChunks()
+    local playerChunk = math.floor(self.player.x / self.chunkSize)
+    --[[for chunkX in pairs(self.activeChunks) do
+      if math.abs(chunkX - playerChunk) > self.loadedRadius then
+        self:unloadChunk(chunkX)
+      end
+    end]]--
+    for i = -self.loadedRadius, self.loadedRadius do
+      self:loadChunk(playerChunk, i)
+    end
+end
+
+function levelOne:generatePlatforms(chunkStartX, chunkWidth)
+    local platforms = {}
+    local platformCount = 15
+    local minY = -1200
+    local maxY = 600
+    for i=1, platformCount do
+      local x = chunkStartX + love.math.random(0, chunkWidth - 200)
+      local y = love.math.random(minY, maxY)
+      local width = love.math.random(100, 500)
+      table.insert(platforms, Ground(x, y, width, 50))
+    end
+    return platforms
+end
+
     
 function levelOne:update(dt)
+    self:updateChunks()
     for i, entity in ipairs(self.entities) do
       entity:update(dt)
       if entity.isBullet and entity.toRemove then
@@ -81,22 +137,33 @@ function levelOne:keypressed(key)
     end
 end
 
-
+--[[
 function levelOne:generatePlatforms(count, worldWidth, worldHeight)
     local minVertSpacing = 100
     local maxVertSpacing = 200
-    local minHorzSpacing = -300
+    local minHorzSpacing = 300
     local maxHorzSpacing = 300
     
     local lastX = 100
     local lastY = 500
-    
+    local x, y
     for _ = 1, count do
+        local sign = love.math.random(0, 2)
         local width = love.math.random(100, 300)
         local height = 50
         
-        local x = lastX + love.math.random(minHorzSpacing, maxHorzSpacing)
-        local y = lastY - love.math.random(minVertSpacing, maxVertSpacing)
+        if sign == 0 then
+          x = lastX + love.math.random(minHorzSpacing, maxHorzSpacing)
+        else
+          x = lastX - love.math.random(minHorzSpacing, maxHorzSpacing)
+        end
+        if sign == 0 then
+          y = lastY + love.math.random(minVertSpacing, maxVertSpacing)
+        else
+          y = lastY - love.math.random(minVertSpacing, maxVertSpacing)
+        end
+        
+        
         
         x = math.max(0, math.min(worldWidth - width, x))
         y = math.max(0, y)
@@ -107,7 +174,8 @@ function levelOne:generatePlatforms(count, worldWidth, worldHeight)
         lastX = x
         lastY = y
     end
-end
+end]]--
+
 
 function levelOne:drawHUD()
     local barWidth = 400
