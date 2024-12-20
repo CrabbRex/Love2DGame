@@ -55,6 +55,7 @@ end
 
 function levelOne:loadChunk(chunkX)
     if self.activeChunks[chunkX] then return end
+    print(chunkX)
     local chunkStartX = chunkX * self.chunkSize
     print("current chunk: " and chunkStartX)
     local platforms = self:generatePlatforms(chunkStartX, self.chunkSize)
