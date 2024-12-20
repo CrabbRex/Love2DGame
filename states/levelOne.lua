@@ -120,7 +120,13 @@ function levelOne:update(dt)
       end
     end
     self.crosshair:update(dt)
-    self.camera:setPosition(self.player.x + self.player.width / 2, self.player.y + self.player.height / 2)
+    -- Get target camera pos
+    local targetX = self.player.x + self.player.width / 2
+    local targetY = self.player.y + self.player.height / 2
+    -- clamp camera's y position to a minimum value (ground)
+    local minY = 720 - 360
+    targetY = math.min(minY, targetY)
+    self.camera:setPosition(targetX, targetY)
 end
     
 function levelOne:draw()
@@ -139,45 +145,6 @@ function levelOne:keypressed(key)
       Gamestate.switch(pauseState)
     end
 end
-
---[[
-function levelOne:generatePlatforms(count, worldWidth, worldHeight)
-    local minVertSpacing = 100
-    local maxVertSpacing = 200
-    local minHorzSpacing = 300
-    local maxHorzSpacing = 300
-    
-    local lastX = 100
-    local lastY = 500
-    local x, y
-    for _ = 1, count do
-        local sign = love.math.random(0, 2)
-        local width = love.math.random(100, 300)
-        local height = 50
-        
-        if sign == 0 then
-          x = lastX + love.math.random(minHorzSpacing, maxHorzSpacing)
-        else
-          x = lastX - love.math.random(minHorzSpacing, maxHorzSpacing)
-        end
-        if sign == 0 then
-          y = lastY + love.math.random(minVertSpacing, maxVertSpacing)
-        else
-          y = lastY - love.math.random(minVertSpacing, maxVertSpacing)
-        end
-        
-        
-        
-        x = math.max(0, math.min(worldWidth - width, x))
-        y = math.max(0, y)
-        
-        local platform = Ground(x, y, width, height)
-        table.insert(self.entities, platform)
-        
-        lastX = x
-        lastY = y
-    end
-end]]--
 
 
 function levelOne:drawHUD()
