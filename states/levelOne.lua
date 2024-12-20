@@ -9,6 +9,7 @@ require "Player"
 require "Crosshair"
 require "Enemy"
 require "Slime"
+require "HUD"
 
 local levelOne = {}
 
@@ -24,6 +25,7 @@ function levelOne:init()
     self.ground = Ground(0, 720 - 50, 1280, 50)
     self.platform = Ground(250, 500, 300, 50)
     self.player = Player(50, 500, self.world, self.camera)
+    self.hud = HUD(self.player)
      
     table.insert(self.entities, self.ground)
     table.insert(self.entities, self.platform)
@@ -136,8 +138,7 @@ function levelOne:draw()
       end
     end)
     self.crosshair:draw()
-    self:drawHUD()
-    self:drawFPS()
+    self.hud:drawHUD()
 end
 
 function levelOne:keypressed(key)
@@ -146,27 +147,5 @@ function levelOne:keypressed(key)
     end
 end
 
-
-function levelOne:drawHUD()
-    local barWidth = 400
-    local barHeight = 20
-    local barPercentage = self.player.health / 100
-    local healthBarX = 10
-    local healthBarY = love.graphics.getHeight() - barHeight - 10
-    
-    love.graphics.setColor(0.5, 0.5, 0.5)
-    love.graphics.rectangle("fill", healthBarX, healthBarY, barWidth, barHeight)
-    
-    if self.player.health > 0 then
-        love.graphics.setColor(1 - barPercentage, barPercentage, 0)
-        love.graphics.rectangle("fill", healthBarX, healthBarY, barWidth * barPercentage, barHeight)
-    end
-    love.graphics.setColor(1, 1, 1)
-end
-
-function levelOne:drawFPS()
-    local fps = love.timer.getFPS()
-    love.graphics.print("FPS: " .. fps, love.graphics.getWidth() - 60, 10)
-end
 
 return levelOne
