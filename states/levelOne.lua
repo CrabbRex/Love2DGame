@@ -101,6 +101,8 @@ function levelOne:generatePlatforms(chunkStartX, chunkWidth)
       local width = love.math.random(100, 500)
       table.insert(platforms, Ground(x, y, width, 50))
     end
+    local floor = Ground(chunkStartX, 720 - 50, 1500, 50)
+    table.insert(platforms, floor)
     return platforms
 end
 
